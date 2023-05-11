@@ -3,12 +3,14 @@ import { Container } from './styled';
 import Searchbar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
 import Button from 'components/Button';
+import Loader from 'components/Loader';
 
 class App extends Component {
   state = {
     query: '',
     pageNumber: 1,
     cards: [],
+    visible: false,
   };
 
   handleSubmitForm = (data, query, page) => {
@@ -39,6 +41,7 @@ class App extends Component {
           onSubmit={this.handleSubmitForm}
           page={this.state.pageNumber}
         />
+        {this.state.visible && <Loader />}
         <ImageGallery cards={this.state.cards}></ImageGallery>
         {this.state.query && (
           <Button
