@@ -1,21 +1,21 @@
 // import PropTypes from 'prop-types';
-import { Header } from './styled';
+import { Header, Form, SearchFormBtn, SearchFormInput } from './styled';
 
 const Searchbar = () => {
   return (
     <Header>
-      <form>
-        <button type="submit">
+      <Form>
+        <SearchFormBtn type="submit">
           <span>Search</span>
-        </button>
+        </SearchFormBtn>
 
-        <input
+        <SearchFormInput
           type="text"
           autoComplete="off"
           autoFocus
           placeholder="Search images and photos"
         />
-      </form>
+      </Form>
     </Header>
   );
 };
