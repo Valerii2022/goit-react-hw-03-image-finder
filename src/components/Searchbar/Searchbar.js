@@ -13,13 +13,19 @@ class Searchbar extends Component {
 
   handleSubmitForm = async e => {
     e.preventDefault();
+    const newPage = this.props.page + 1;
 
     try {
-      const { data } = await pixabayApi.fetchPhotos(this.state.query);
-      this.props.onSubmit(data.hits);
+      const { data } = await pixabayApi.fetchPhotos(
+        this.state.query,
+        this.props.page
+      );
+      this.props.onSubmit(data.hits, this.state.query, newPage);
     } catch (error) {
       console.log(error);
     }
+
+    this.setState({ query: '' });
   };
 
   addQueryName = event => {
@@ -35,6 +41,7 @@ class Searchbar extends Component {
           </SearchFormBtn>
 
           <SearchFormInput
+            value={this.state.query}
             onChange={this.addQueryName}
             type="text"
             autoComplete="off"
