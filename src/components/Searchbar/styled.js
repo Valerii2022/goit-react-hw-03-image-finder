@@ -45,6 +45,10 @@ export const SearchFormBtn = styled.button`
   :hover {
     opacity: 1;
   }
+  :disabled {
+    opacity: 0.2;
+    cursor: auto;
+  }
 `;
 
 export const SearchFormInput = styled.input`

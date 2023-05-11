@@ -36,7 +36,7 @@ class Searchbar extends Component {
     return (
       <Header>
         <Form onSubmit={this.handleSubmitForm}>
-          <SearchFormBtn type="submit">
+          <SearchFormBtn type="submit" disabled={this.state.query === ''}>
             <SearchIcon width="30" height="30" />
           </SearchFormBtn>
 

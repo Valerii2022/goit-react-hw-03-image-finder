@@ -12,13 +12,24 @@ class App extends Component {
   };
 
   handleSubmitForm = (data, query, page) => {
-    try {
-      this.setState(prevState => ({
-        cards: [...prevState.cards, ...data],
-        query: query,
-        pageNumber: page,
-      }));
-    } catch (error) {}
+    if (this.state.query === query || this.state.pageNumber === 1) {
+      try {
+        this.setState(prevState => ({
+          cards: [...prevState.cards, ...data],
+          query: query,
+          pageNumber: page,
+        }));
+      } catch (error) {}
+    }
+    if (this.state.query !== query) {
+      try {
+        this.setState(prevState => ({
+          cards: data,
+          query: query,
+          pageNumber: 1,
+        }));
+      } catch (error) {}
+    }
   };
 
   render() {
@@ -29,11 +40,13 @@ class App extends Component {
           page={this.state.pageNumber}
         />
         <ImageGallery cards={this.state.cards}></ImageGallery>
-        <Button
-          onSubmit={this.handleSubmitForm}
-          page={this.state.pageNumber}
-          query={this.state.query}
-        />
+        {this.state.query && (
+          <Button
+            onSubmit={this.handleSubmitForm}
+            page={this.state.pageNumber}
+            query={this.state.query}
+          />
+        )}
       </Container>
     );
   }
