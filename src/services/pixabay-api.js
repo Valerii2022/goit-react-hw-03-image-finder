@@ -5,22 +5,20 @@ export class PixabayAPI {
   #BASE_API = 'https://pixabay.com/api/';
 
   page = 1;
-  count = 40;
-  query = null;
 
   baseSearchParams = {
     key: this.#API_KEY,
-    per_page: this.count,
+    per_page: 12,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,
   };
 
-  async fetchPhotos() {
+  async fetchPhotos(query) {
     try {
       return await axios.get(`${this.#BASE_API}`, {
         params: {
-          q: this.query,
+          q: query,
           page: this.page,
           ...this.baseSearchParams,
         },

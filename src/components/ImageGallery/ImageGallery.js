@@ -4,10 +4,10 @@ import { Gallery, GalleryItem, ItemImg } from './styled';
 const ImageGallery = ({ cards }) => {
   return (
     <Gallery>
-      {cards.map(({ id, name, url }) => {
+      {cards.map(({ id, webformatURL }) => {
         return (
           <GalleryItem key={id}>
-            <ItemImg src={url} alt={name} />
+            <ItemImg src={webformatURL} alt="" />
           </GalleryItem>
         );
       })}
