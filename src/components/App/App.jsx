@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container } from './styled';
 import Searchbar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
+import { PixabayAPI } from 'services/pixabay-api';
 
 class App extends Component {
   state = {

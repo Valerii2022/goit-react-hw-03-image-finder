@@ -1,12 +1,13 @@
 // import PropTypes from 'prop-types';
 import { Header, Form, SearchFormBtn, SearchFormInput } from './styled';
+import { ReactComponent as SearchIcon } from '../../icons/search.svg';
 
 const Searchbar = () => {
   return (
     <Header>
       <Form>
         <SearchFormBtn type="submit">
-          <span>Search</span>
+          <SearchIcon width="30" height="30" />
         </SearchFormBtn>
 
         <SearchFormInput
