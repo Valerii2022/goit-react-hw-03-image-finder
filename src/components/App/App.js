@@ -16,38 +16,22 @@ class App extends Component {
     visible: false,
   };
 
-  // handleSubmitForm = (data, query, page) => {
-  //   if (this.state.query === query || this.state.pageNumber === 1) {
-  //     try {
-  //       this.setState(prevState => ({
-  //         cards: [...prevState.cards, ...data],
-  //         query: query,
-  //         pageNumber: page,
-  //       }));
-  //     } catch (error) {}
-  //   }
-  //   if (this.state.query !== query) {
-  //     try {
-  //       this.setState(prevState => ({
-  //         cards: data,
-  //         query: query,
-  //         pageNumber: 1,
-  //       }));
-  //     } catch (error) {}
-  //   }
-  // };
-
   handleSubmitForm = async query => {
     try {
       const { data } = await pixabayApi.fetchPhotos(
         query,
         this.state.pageNumber
       );
-      this.setState(prevState => ({
-        cards: [...prevState.cards, ...data.hits],
-        query: query,
-        pageNumber: prevState.pageNumber + 1,
-      }));
+      if (this.state.query === query) {
+        this.setState(prevState => ({
+          cards: [...prevState.cards, ...data.hits],
+          query: query,
+          pageNumber: prevState.pageNumber + 1,
+        }));
+      }
+      if (this.state.query !== query) {
+        this.setState({ cards: data.hits, query: query, pageNumber: 1 });
+      }
     } catch (error) {
       console.log(error);
     }
