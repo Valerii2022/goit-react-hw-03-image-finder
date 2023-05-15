@@ -30,7 +30,11 @@ class App extends Component {
         }));
       }
       if (this.state.query !== query) {
-        this.setState({ cards: data.hits, query: query, pageNumber: 1 });
+        this.setState(prevState => ({
+          cards: data.hits,
+          query: query,
+          pageNumber: prevState.pageNumber + 1,
+        }));
       }
     } catch (error) {
       console.log(error);
