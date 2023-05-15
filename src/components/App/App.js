@@ -46,8 +46,13 @@ class App extends Component {
       <Container>
         <Searchbar handleSubmit={this.handleSubmitForm} />
         {this.state.visible && <Loader />}
-        <ImageGallery cards={this.state.cards}></ImageGallery>
-        <Button handleSubmit={this.handleSubmitForm} query={this.state.query} />
+        <ImageGallery cards={this.state.cards} />
+        {this.state.query && (
+          <Button
+            handleSubmit={this.handleSubmitForm}
+            query={this.state.query}
+          />
+        )}
       </Container>
     );
   }
