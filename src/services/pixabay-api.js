@@ -6,7 +6,7 @@ export class PixabayAPI {
 
   baseSearchParams = {
     key: this.#API_KEY,
-    per_page: 4,
+    per_page: 12,
     image_type: 'photo',
     orientation: 'horizontal',
     safesearch: true,

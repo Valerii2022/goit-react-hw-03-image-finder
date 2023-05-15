@@ -19,6 +19,7 @@ class App extends Component {
   };
 
   fetchPhotosFromApi = async query => {
+    this.setState({ loaderVisible: true });
     try {
       const { data } = await pixabayApi.fetchPhotos(
         query,
@@ -33,45 +34,36 @@ class App extends Component {
   };
 
   handleSubmitForm = query => {
-    if (this.state.query !== query) {
-      this.setState({
-        pageNumber: 1,
-        cards: [],
-        query: query,
-        loadMoreBtn: true,
-      });
-      this.fetchPhotosFromApi(query);
-    }
-    if (this.state.query === query) {
-      this.setState(prevState => ({
-        query: query,
-        loadMoreBtn: true,
-      }));
-      this.fetchPhotosFromApi(query);
-    }
+    this.setState(prevState => ({
+      cards: [],
+      pageNumber: 2,
+      query: query,
+    }));
+    this.fetchPhotosFromApi(query);
+  };
+
+  handleLoadMoreBtnClick = query => {
+    this.setState(prevState => ({
+      query: query,
+      pageNumber: prevState.pageNumber + 1,
+    }));
+    this.fetchPhotosFromApi(query);
   };
 
   handleSuccessFetch(data, query) {
-    this.setState({ loaderVisible: true });
+    this.setState({ loadMoreBtn: true });
     if (data.totalHits === 0) {
+      this.setState({ loadMoreBtn: false });
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
+
+      return;
     }
     this.setState(prevState => ({
       loaderVisible: false,
       cards: [...prevState.cards, ...data.hits],
     }));
-    if (this.state.query === query) {
-      this.setState(prevState => ({
-        pageNumber: prevState.pageNumber + 1,
-      }));
-    }
-    if (this.state.query !== query) {
-      this.setState({
-        pageNumber: 1,
-      });
-    }
   }
 
   render() {
@@ -82,7 +74,7 @@ class App extends Component {
         {this.state.loaderVisible && <Loader />}
         {this.state.loadMoreBtn && (
           <Button
-            handleSubmit={this.handleSubmitForm}
+            handleSubmit={this.handleLoadMoreBtnClick}
             query={this.state.query}
           />
         )}
