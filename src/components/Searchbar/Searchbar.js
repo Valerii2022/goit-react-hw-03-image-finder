@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Header, Form, SearchFormBtn, SearchFormInput } from './styled';
 import { ReactComponent as SearchIcon } from '../../icons/search.svg';
@@ -41,3 +41,7 @@ class Searchbar extends Component {
 }
 
 export default Searchbar;
+
+Searchbar.propTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+};
