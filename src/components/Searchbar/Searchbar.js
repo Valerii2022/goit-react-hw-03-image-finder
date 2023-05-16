@@ -6,6 +6,7 @@ import { ReactComponent as SearchIcon } from '../../icons/search.svg';
 class Searchbar extends Component {
   state = {
     query: '',
+    pageNumber: 1,
   };
 
   addQueryName = event => {
@@ -14,7 +15,7 @@ class Searchbar extends Component {
 
   handleSubmitForm = e => {
     e.preventDefault();
-    this.props.handleSubmit(this.state.query);
+    this.props.handleSubmit(this.state.query, this.state.pageNumber);
     this.setState({ query: '' });
   };
 

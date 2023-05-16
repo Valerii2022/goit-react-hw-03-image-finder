@@ -18,40 +18,37 @@ class App extends Component {
     loadMoreBtn: false,
   };
 
-  fetchPhotosFromApi = async query => {
+  fetchPhotosFromApi = async (query, pageNumber) => {
     this.setState({ loaderVisible: true });
     try {
-      const { data } = await pixabayApi.fetchPhotos(
-        query,
-        this.state.pageNumber
-      );
+      const { data } = await pixabayApi.fetchPhotos(query, pageNumber);
       this.handleSuccessFetch(data, query);
     } catch (error) {
-      Notiflix.Notify.failure(error);
+      this.handleErrorFetch(error);
     } finally {
       this.setState({ loaderVisible: false });
     }
   };
 
-  handleSubmitForm = query => {
-    this.setState(prevState => ({
+  handleSubmitForm = (query, pageNumber) => {
+    this.setState({
       cards: [],
-      pageNumber: 2,
-      query: query,
-    }));
-    this.fetchPhotosFromApi(query);
+      pageNumber,
+      query,
+      loadMoreBtn: false,
+    });
+    this.fetchPhotosFromApi(query, pageNumber);
   };
 
   handleLoadMoreBtnClick = query => {
-    this.setState(prevState => ({
-      query: query,
-      pageNumber: prevState.pageNumber + 1,
-    }));
-    this.fetchPhotosFromApi(query);
+    this.setState({
+      query,
+      loadMoreBtn: false,
+    });
+    this.fetchPhotosFromApi(query, this.state.pageNumber);
   };
 
   handleSuccessFetch(data, query) {
-    this.setState({ loadMoreBtn: true });
     if (data.totalHits === 0) {
       this.setState({ loadMoreBtn: false });
       Notiflix.Notify.failure(
@@ -60,10 +57,17 @@ class App extends Component {
 
       return;
     }
+    //   this.setState({ loadMoreBtn: true });
     this.setState(prevState => ({
+      pageNumber: prevState.pageNumber + 1,
       loaderVisible: false,
       cards: [...prevState.cards, ...data.hits],
+      loadMoreBtn: true,
     }));
+  }
+
+  handleErrorFetch(error) {
+    Notiflix.Notify.failure(error.message);
   }
 
   render() {
