@@ -22,7 +22,7 @@ class App extends Component {
     this.setState({ loaderVisible: true });
     try {
       const { data } = await pixabayApi.fetchPhotos(query, pageNumber);
-      this.handleSuccessFetch(data, query);
+      this.handleSuccessFetch(data);
     } catch (error) {
       this.handleErrorFetch(error);
     } finally {
@@ -48,22 +48,26 @@ class App extends Component {
     this.fetchPhotosFromApi(query, this.state.pageNumber);
   };
 
-  handleSuccessFetch(data, query) {
+  handleSuccessFetch(data) {
     if (data.totalHits === 0) {
       this.setState({ loadMoreBtn: false });
       Notiflix.Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
       );
-
       return;
     }
-    //   this.setState({ loadMoreBtn: true });
     this.setState(prevState => ({
       pageNumber: prevState.pageNumber + 1,
       loaderVisible: false,
       cards: [...prevState.cards, ...data.hits],
       loadMoreBtn: true,
     }));
+    if (data.hits.length < 12) {
+      this.setState({ loadMoreBtn: false });
+      Notiflix.Notify.info(
+        `We're sorry, but you've reached the end of search results.`
+      );
+    }
   }
 
   handleErrorFetch(error) {
