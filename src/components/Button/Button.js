@@ -4,7 +4,7 @@ import { LoadMoreBtn } from './styled';
 
 class Button extends Component {
   handleBtnClick = () => {
-    this.props.handleSubmit(this.props.query);
+    this.props.handleSubmit();
   };
 
   render() {
@@ -20,5 +20,4 @@ export default Button;
 
 Button.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
-  query: PropTypes.string.isRequired,
 };

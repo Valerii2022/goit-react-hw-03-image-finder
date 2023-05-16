@@ -18,34 +18,42 @@ class App extends Component {
     loadMoreBtn: false,
   };
 
-  fetchPhotosFromApi = async (query, pageNumber) => {
-    this.setState({ loaderVisible: true });
-    try {
-      const { data } = await pixabayApi.fetchPhotos(query, pageNumber);
-      this.handleSuccessFetch(data);
-    } catch (error) {
-      this.handleErrorFetch(error);
-    } finally {
-      this.setState({ loaderVisible: false });
+  async componentDidUpdate(_, prevState) {
+    if (
+      prevState.query !== this.state.query ||
+      prevState.pageNumber !== this.state.pageNumber
+    ) {
+      this.setState({ loaderVisible: true });
+      try {
+        const { data } = await pixabayApi.fetchPhotos(
+          this.state.query,
+          this.state.pageNumber
+        );
+        this.handleSuccessFetch(data);
+      } catch (error) {
+        this.handleErrorFetch(error);
+      } finally {
+        this.setState({ loaderVisible: false });
+      }
+    }
+  }
+
+  handleSubmitForm = query => {
+    if (this.state.query !== query) {
+      this.setState({
+        cards: [],
+        pageNumber: 1,
+        query,
+        loadMoreBtn: false,
+      });
     }
   };
 
-  handleSubmitForm = (query, pageNumber) => {
-    this.setState({
-      cards: [],
-      pageNumber,
-      query,
-      loadMoreBtn: false,
-    });
-    this.fetchPhotosFromApi(query, pageNumber);
-  };
-
-  handleLoadMoreBtnClick = query => {
-    this.setState({
-      query,
-      loadMoreBtn: false,
-    });
-    this.fetchPhotosFromApi(query, this.state.pageNumber);
+  handleLoadMoreBtnClick = () => {
+    this.setState(prevState => ({
+      pageNumber: prevState.pageNumber + 1,
+      loadMoreBtn: true,
+    }));
   };
 
   handleSuccessFetch(data) {
@@ -57,7 +65,6 @@ class App extends Component {
       return;
     }
     this.setState(prevState => ({
-      pageNumber: prevState.pageNumber + 1,
       loaderVisible: false,
       cards: [...prevState.cards, ...data.hits],
       loadMoreBtn: true,
@@ -81,10 +88,7 @@ class App extends Component {
         <ImageGallery cards={this.state.cards} />
         {this.state.loaderVisible && <Loader />}
         {this.state.loadMoreBtn && (
-          <Button
-            handleSubmit={this.handleLoadMoreBtnClick}
-            query={this.state.query}
-          />
+          <Button handleSubmit={this.handleLoadMoreBtnClick} />
         )}
       </Container>
     );
