@@ -50,6 +50,16 @@ export default class ImageGallery extends Component {
   }
 }
 
+// ImageGallery.propTypes = {
+//   cards: PropTypes.array,
+// };
+
 ImageGallery.propTypes = {
-  cards: PropTypes.array,
+  cards: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string,
+      tags: PropTypes.string,
+    })
+  ),
 };
